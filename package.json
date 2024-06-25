@@ -1,0 +1,21 @@
+{
+  "name": "snuggles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "rimraf dist && tsc && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^5.0.7"
+  },
+  "dependencies": {
+    "@types/node": "^20.14.8",
+    "discord.js": "^14.15.3",
+    "toml": "^3.0.0",
+    "typescript": "^5.5.2"
+  }
+}
