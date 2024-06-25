@@ -1,4 +1,4 @@
-import {Client, GatewayIntentBits} from "discord.js";
+import {Client, GatewayIntentBits, Routes} from "discord.js";
 import { Logger, ILogObj } from "tslog";
 import config from "./config/Config";
 import {PingCommand} from "./command/impl/PingCommand";
