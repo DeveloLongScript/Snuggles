@@ -1,4 +1,4 @@
-import Command from "../command/Command";
+import Command from "../command/command";
 import {logger} from "../snuggles";
 import {Client, Events, Routes} from "discord.js";
 

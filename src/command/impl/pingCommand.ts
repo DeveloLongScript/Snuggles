@@ -1,7 +1,7 @@
-import Command from "../Command";
-import {CommandInteraction, SlashCommandBuilder} from "discord.js";
+import Command from "../command";
+import {CommandInteraction, Embed, EmbedBuilder, EmbedData, SlashCommandBuilder} from "discord.js";
 
-export class PingCommand extends Command {
+export default class PingCommand extends Command {
     constructor() {
         super("ping", "measure the bot's latency");
     }
@@ -20,8 +20,8 @@ export class PingCommand extends Command {
 
         await interaction.editReply({
             content:
-                `:: api latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms` +
-                `\n:: ws latency: ${interaction.client.ws.ping}ms`
+              `:: api latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms` +
+              `\n:: ws latency: ${interaction.client.ws.ping}ms`
         });
     }
 }
