@@ -1,9 +1,9 @@
-import Command from "../Command";
-import {CommandInteraction, EmbedBuilder, SlashCommandBuilder} from "discord.js";
+import Command from "../command";
+import {CommandInteraction, Embed, EmbedBuilder, EmbedData, SlashCommandBuilder} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
 
-export class PingCommand extends Command {
+export default class PingCommand extends Command {
     constructor() {
         super("ping", "measure the bot's latency");
     }
