@@ -45,6 +45,10 @@ export default class PingCommand extends Command {
         embed.setDescription(description.join("\n"));
         embed.setTitle(`<:ping:1255273004292771931>  Pinging...`)
 
+        await interaction.editReply({
+            embeds: [embed]
+        });
+
         const dbPing = await database.measureLatency();
         description[5] = ` - **Database Latency** ${dbPing}ms`
         embed.setDescription(description.join("\n"));
