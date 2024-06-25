@@ -2,6 +2,7 @@ import Command from "../command";
 import {CommandInteraction, Embed, EmbedBuilder, EmbedData, SlashCommandBuilder} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
+import {database} from "../../snuggles";
 
 export default class PingCommand extends Command {
     constructor() {
@@ -44,7 +45,7 @@ export default class PingCommand extends Command {
         embed.setDescription(description.join("\n"));
         embed.setTitle(`<:ping:1255273004292771931>  Pinging...`)
 
-        const dbPing = 10; // todo
+        const dbPing = await database.measureLatency();
         description[5] = ` - **Database Latency** ${dbPing}ms`
         embed.setDescription(description.join("\n"));
         embed.setTitle(`<:ping:1255273004292771931>  Pong!`)
