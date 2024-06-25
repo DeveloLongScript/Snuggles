@@ -2,9 +2,9 @@
   "name": "snuggles",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "snuggles.js",
   "scripts": {
-    "start": "rimraf dist && tsc && node dist/index.js"
+    "start": "rimraf dist && tsc && node dist/snuggles.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "@types/node": "^20.14.8",
     "discord.js": "^14.15.3",
     "toml": "^3.0.0",
+    "tslog": "^4.9.3",
     "typescript": "^5.5.2"
   }
 }
