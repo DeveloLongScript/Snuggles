@@ -4,8 +4,9 @@ import PingCommand from "../command/impl/pingCommand";
 import config from "../config/config";
 import {handleCommands} from "../util/commandUtils";
 import {deployCommands} from "../util/restUtils";
+import Command from "../command/command";
 
-const commands = [
+const commands: Command[] = [
   new PingCommand()
 ];
 
@@ -20,7 +21,7 @@ export class Snuggles extends Client {
   }
 
   private async init() {
-    this.on("ready", this.onReady);
+    this.once("ready", this.onReady);
   }
 
   private async onReady() {

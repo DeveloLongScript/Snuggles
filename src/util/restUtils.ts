@@ -1,5 +1,4 @@
 import {Client, Routes} from "discord.js";
-import {Snuggles} from "../structure/client";
 import {logger} from "../index";
 import Command from "../command/command";
 
@@ -26,7 +25,7 @@ export async function deployCommands(
   commands: Command[],
   guildId?: number | string
 ) {
-    let commandsData = commands.map(command => command.getCommand().toJSON());
+    let commandsData = commands.map(command => command.getParsedCommand().toJSON());
 
     let responseData
     if (guildId) {

@@ -1,16 +1,8 @@
 import Command from "../command";
-import {
-    CacheType,
-    ChatInputCommandInteraction,
-    CommandInteraction,
-    Embed,
-    EmbedBuilder,
-    EmbedData,
-    SlashCommandBuilder
-} from "discord.js";
+import {ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
-import {database, logger} from "../../snuggles";
+import {databaseLatency} from "../../database/database";
 
 export default class PingCommand extends Command {
     constructor() {
@@ -59,7 +51,7 @@ export default class PingCommand extends Command {
         description[3] = ` - **Misc Rest Latency** ${restPing}ms`
         await this.updateEmbed(interaction, embed, description);
 
-        const dbPing = await database.measureLatency();
+        const dbPing = await databaseLatency();
         description[6] = ` - **Database Latency** ${dbPing}ms`
         await this.updateEmbed(interaction, embed, description, "<:ping:1255273004292771931>  Pong!");
     }
