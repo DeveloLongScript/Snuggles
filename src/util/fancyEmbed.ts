@@ -11,7 +11,7 @@ type BarStyle = keyof typeof BarStyle;
 export class FancyEmbed extends EmbedBuilder {
     constructor(bar: BarStyle = 'pink') {
         super();
-        this.setColor(0x2F3136);
+        this.setColor(0x2b2d31);
         this.setImage(BarStyle[bar]);
     }
 }
