@@ -46,7 +46,7 @@ export default class Command {
         throw new Error(this.name + " Command getCommand method not implemented");
     }
 
-    async execute(interaction: Interaction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         throw new Error(this.name + " Command execute method not implemented");
     }
 

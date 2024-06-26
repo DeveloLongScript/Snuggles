@@ -1,6 +1,6 @@
 import Command from "../command/command";
 import {logger} from "../snuggles";
-import {Client, Events, Routes} from "discord.js";
+import {ChatInputCommandInteraction, Client, Events, Routes} from "discord.js";
 
 /**
  * Register commands on a client instance
@@ -49,7 +49,7 @@ export async function deployCommands(
         const command = commands.find(command => command.name === commandName);
         if (!command) return;
 
-        command.execute(interaction)
+        command.execute(interaction as ChatInputCommandInteraction)
             .then(() => logger.debug(`Command ${commandName} executed`))
             .catch((err) => {
                 const referenceId = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, "0");
