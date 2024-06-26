@@ -16,8 +16,10 @@ export async function deployCommands(
     guildId?: number | string
 ) {
     // Deploy commands
+    logger.silly(deploy)
+    logger.silly(guildId)
     if (deploy) {
-        let commandsData = commands.map(command => command.getCommand().toJSON());
+        let commandsData = commands.map(command => command.getParsedCommand().toJSON());
 
         if (guildId) {
             const data = await client.rest.put(
@@ -26,6 +28,7 @@ export async function deployCommands(
             );
 
             logger.debug("Deployed", commandsData.length, "commands to guild", guildId);
+            logger.debug("API Res:", JSON.stringify(data));
         } else {
             const data = await client.rest.put(
                 Routes.applicationCommands(client.user!.id),
@@ -35,7 +38,6 @@ export async function deployCommands(
             logger.debug("Deployed", commandsData.length, "commands globally");
         }
 
-        // logger.debug("API Res:", JSON.stringify(data));
     }
 
     // Handle command execution
