@@ -13,7 +13,7 @@ import {
  * @constructor
  * @param {string} name - The name of the command
  * @param {string} description - The description of the command
- * @param {boolean} silentReply - Whether the command should reply ephemerally
+ * @param {boolean} defaultSilent - Whether the command should reply silently by default
  * @param {boolean} showSilentToggle - Whether the command should show the toggle to switch between silent and non-silent replies
  */
 export default class Command {
