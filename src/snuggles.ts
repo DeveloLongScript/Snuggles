@@ -19,7 +19,7 @@ async function registerCommands(client: Client) {
         new PingCommand()
     ];
 
-    await deployCommands(client, commands, config().commands.global, config().commands.global ? undefined : config().commands.guild_id);
+    await deployCommands(client, commands, config().commands.deploy, config().commands.global ? undefined : config().commands.guild_id);
     logger.info(`Registered ${commands.length} commands in ${new Date().getTime() - now.getTime()}ms`);
 }
 

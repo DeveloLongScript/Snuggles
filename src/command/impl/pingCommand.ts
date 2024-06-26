@@ -1,12 +1,20 @@
 import Command from "../command";
-import {CommandInteraction, Embed, EmbedBuilder, EmbedData, SlashCommandBuilder} from "discord.js";
+import {
+    CacheType,
+    ChatInputCommandInteraction,
+    CommandInteraction,
+    Embed,
+    EmbedBuilder,
+    EmbedData,
+    SlashCommandBuilder
+} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
 import {database, logger} from "../../snuggles";
 
 export default class PingCommand extends Command {
     constructor() {
-        super("ping", "measure the bot's latency");
+        super("ping", "Measure's Snuggle's snuggling speed");
     }
 
     override getCommand() {
@@ -15,7 +23,7 @@ export default class PingCommand extends Command {
             .setDescription(this.description);
     }
 
-    override async execute(interaction: CommandInteraction) {
+    override async execute(interaction: ChatInputCommandInteraction) {
         const now = Date.now();
         const timeSent = interaction.createdTimestamp;
         const gatewayPing = interaction.client.ws.ping;
@@ -36,12 +44,13 @@ export default class PingCommand extends Command {
             .setTitle(`<a:drugged_ping:1255518405440569415>  Pinging...`)
             .setDescription(description.join("\n"))
 
-        const sent = await interaction.reply({
+        const reply = await interaction.reply({
             embeds: [embed],
-            fetchReply: true
+            fetchReply: true,
+            ephemeral: this.getSilent(interaction)
         });
 
-        const responseLatency = sent.createdTimestamp - timeSent
+        const responseLatency = reply.createdTimestamp - timeSent
         description[2] = ` - **Response Latency** ${responseLatency}ms`
         embed.setDescription(description.join("\n"));
         await this.updateEmbed(interaction, embed, description);
