@@ -1,26 +1,29 @@
 import Command from "../command";
-import {ChatInputCommandInteraction, SlashCommandBuilder} from "discord.js";
+import {
+    CacheType,
+    ChatInputCommandInteraction,
+    CommandInteraction,
+    Embed,
+    EmbedBuilder,
+    EmbedData,
+    SlashCommandBuilder
+} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
-import {databaseLatency} from "../../database/database";
+import {database, logger} from "../../snuggles";
 
 export default class PingCommand extends Command {
     constructor() {
-        super("ping", "measure the bot's latency");
+        super("ping", "Measure's Snuggle's snuggling speed");
     }
 
     override getCommand() {
         return new SlashCommandBuilder()
-          .setName(this.name)
-          .setDescription(this.description)
-          .addStringOption(option => option
-            .setName("something")
-            .setDescription("Something to say")
-            .setRequired(false)
-          );
+            .setName(this.name)
+            .setDescription(this.description);
     }
 
-    override async execute(interaction: ChatInputCommandInteraction){
+    override async execute(interaction: ChatInputCommandInteraction) {
         const now = Date.now();
         const timeSent = interaction.createdTimestamp;
         const gatewayPing = interaction.client.ws.ping;
@@ -28,7 +31,8 @@ export default class PingCommand extends Command {
         const description = [
             `:satellite: **Discord Latency**`,
             ` - **Gateway Latency** ${gatewayPing}ms`,
-            ` - **Rest Latency** <a:loading:1255273134769180692>`,
+            ` - **Response Latency** <a:loading:1255273134769180692>`,
+            ` - **Misc Rest Latency** <a:loading:1255273134769180692>`,
             ``,
             `:stopwatch: **Internal Latency**`,
             ` - **Database Latency** <a:loading:1255273134769180692>`,
@@ -37,30 +41,35 @@ export default class PingCommand extends Command {
         ]
 
         const embed = new FancyEmbed()
-            .setTitle(`<:ping:1255273004292771931>  Pinging...`)
+            .setTitle(`<a:drugged_ping:1255518405440569415>  Pinging...`)
             .setDescription(description.join("\n"))
 
-        const sent = await interaction.reply({
+        const reply = await interaction.reply({
             embeds: [embed],
-            fetchReply: true
+            fetchReply: true,
+            ephemeral: this.getSilent(interaction)
         });
+
+        const responseLatency = reply.createdTimestamp - timeSent
+        description[2] = ` - **Response Latency** ${responseLatency}ms`
+        embed.setDescription(description.join("\n"));
+        await this.updateEmbed(interaction, embed, description);
 
         const restPing = await getRestPing(interaction.client);
-        description[2] = ` - **Rest Latency** ${restPing}ms`
+        description[3] = ` - **Misc Rest Latency** ${restPing}ms`
+        await this.updateEmbed(interaction, embed, description);
+
+        const dbPing = await database.measureLatency();
+        description[6] = ` - **Database Latency** ${dbPing}ms`
+        await this.updateEmbed(interaction, embed, description, "<:ping:1255273004292771931>  Pong!");
+    }
+
+    private async updateEmbed(interaction: CommandInteraction, embed: FancyEmbed, description: string[], titleOverride: string | null = null) {
         embed.setDescription(description.join("\n"));
-        embed.setTitle(`<:ping:1255273004292771931>  Pinging...`)
-
-        await interaction.editReply({
-            embeds: [embed]
-        });
-
-        const dbPing = await databaseLatency();
-        description[5] = ` - **Database Latency** ${dbPing}ms`
-        embed.setDescription(description.join("\n"));
-        embed.setTitle(`<:ping:1255273004292771931>  Pong!`)
-
+        if (titleOverride) embed.setTitle(titleOverride);
         await interaction.editReply({
             embeds: [embed]
         });
     }
+
 }
