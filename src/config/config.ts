@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import toml from "@iarna/toml";
-import {logger} from "../snuggles";
+import {logger} from "../index";
 
 interface Config {
     authorization: {

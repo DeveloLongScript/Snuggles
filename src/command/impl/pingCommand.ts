@@ -1,8 +1,8 @@
 import Command from "../command";
-import {CommandInteraction, Embed, EmbedBuilder, EmbedData, SlashCommandBuilder} from "discord.js";
+import {ChatInputCommandInteraction, SlashCommandBuilder} from "discord.js";
 import {FancyEmbed} from "../../util/fancyEmbed";
 import {getRestPing} from "../../util/restUtils";
-import {database} from "../../snuggles";
+import {databaseLatency} from "../../database/database";
 
 export default class PingCommand extends Command {
     constructor() {
@@ -11,11 +11,16 @@ export default class PingCommand extends Command {
 
     override getCommand() {
         return new SlashCommandBuilder()
-            .setName(this.name)
-            .setDescription(this.description);
+          .setName(this.name)
+          .setDescription(this.description)
+          .addStringOption(option => option
+            .setName("something")
+            .setDescription("Something to say")
+            .setRequired(false)
+          );
     }
 
-    override async execute(interaction: CommandInteraction) {
+    override async execute(interaction: ChatInputCommandInteraction){
         const now = Date.now();
         const timeSent = interaction.createdTimestamp;
         const gatewayPing = interaction.client.ws.ping;
@@ -49,7 +54,7 @@ export default class PingCommand extends Command {
             embeds: [embed]
         });
 
-        const dbPing = await database.measureLatency();
+        const dbPing = await databaseLatency();
         description[5] = ` - **Database Latency** ${dbPing}ms`
         embed.setDescription(description.join("\n"));
         embed.setTitle(`<:ping:1255273004292771931>  Pong!`)

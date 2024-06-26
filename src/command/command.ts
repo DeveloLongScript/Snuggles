@@ -1,4 +1,4 @@
-import {CommandInteraction, SlashCommandBuilder} from "discord.js";
+import {CacheType, ChatInputCommandInteraction, CommandInteraction, SlashCommandOptionsOnlyBuilder} from "discord.js";
 
 export default class Command {
     name: string;
@@ -9,11 +9,11 @@ export default class Command {
         this.description = description;
     }
 
-    getCommand(): SlashCommandBuilder {
+    getCommand(): SlashCommandOptionsOnlyBuilder {
         throw new Error(this.name + " Command getCommand method not implemented");
     }
 
-    async execute(interaction: CommandInteraction) {
+    async execute(interaction: ChatInputCommandInteraction) {
         throw new Error(this.name + " Command execute method not implemented");
     }
 }
