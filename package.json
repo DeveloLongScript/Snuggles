@@ -4,7 +4,7 @@
   "description": "",
   "main": "snuggles.js",
   "scripts": {
-    "start": "rimraf dist && tsc && node dist/snuggles.js"
+    "start": "rimraf dist && tsc && node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",
+    "@typegoose/typegoose": "^12.5.0",
     "@types/node": "^20.14.8",
     "discord.js": "^14.15.3",
     "mongodb": "^6.7.0",
+    "mongoose": "^8.4.4",
+    "tslib": "^2.6.3",
     "tslog": "^4.9.3",
     "typescript": "^5.5.2"
   }

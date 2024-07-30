@@ -1,35 +1,15 @@
-import {Collection, Db, MongoClient} from 'mongodb';
+import { connect, disconnect, connection } from 'mongoose';
 
-interface IDatabase {
-  connect(uri: string, dbName: string): Promise<void>;
-  disconnect(): Promise<void>;
-  getCollection<T extends Document>(name: string): Collection<T>;
-  measureLatency(): Promise<number>;
+export async function databaseConnect(mongoUri: string): Promise<void> {
+  await connect(mongoUri);
 }
 
-class Database implements IDatabase {
-  private client: MongoClient | null = null;
-  private db: Db | null = null;
-
-  public async connect(uri: string, dbName: string): Promise<void> {
-    this.client = new MongoClient(uri);
-    await this.client.connect();
-    this.db = this.client.db(dbName);
-  }
-
-  public async disconnect(): Promise<void> {
-    await this.client?.close();
-  }
-
-  public getCollection<T extends Document>(name: string): Collection<T> {
-    return this.db!.collection<T>(name);
-  }
-
-  public async measureLatency(): Promise<number> {
-    const start = Date.now();
-    await this.db?.command({ping: 1});
-    return Date.now() - start;
-  }
+export async function databaseDisconnect(): Promise<void> {
+  await disconnect();
 }
 
-export default Database;
+export async function databaseLatency(): Promise<number> {
+  const start = Date.now();
+  await connection.db.command({ping: 1});
+  return Date.now() - start;
+}
