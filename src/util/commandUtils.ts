@@ -25,6 +25,7 @@ export async function handleCommands(
               const referenceId = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, "0");
 
               logger.error(`Error executing command ${commandName}. Ref ID: ${referenceId}`, err);
+              logger.error({commandName, user: {username: interaction.user.username, id: interaction.user.id}})
               interaction.reply({ content: `There was an error while executing the command \n> Ref ID: ${referenceId}`, ephemeral: true });
           });
     });

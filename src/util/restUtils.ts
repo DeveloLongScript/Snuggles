@@ -1,6 +1,7 @@
 import {Client, Routes} from "discord.js";
 import {logger} from "../index";
 import Command from "../command/command";
+import { DeploymentError } from "../errors/deploymentError";
 
 export async function getRestPing(client: Client) {
     if (client.user === null) {
@@ -29,19 +30,27 @@ export async function deployCommands(
 
     let responseData
     if (guildId) {
+      try {
         responseData = await client.rest.put(
           Routes.applicationGuildCommands(client.user!.id, guildId.toString()),
           { body: commandsData }
         );
-
-        logger.debug(`Deployed ${commandsData.length} commands to guild ${guildId}`);
+      } catch {
+        throw new DeploymentError()
+      }
+        
+      logger.debug(`Deployed ${commandsData.length} commands to guild ${guildId}`);
     } else {
+      try {
         responseData = await client.rest.put(
           Routes.applicationCommands(client.user!.id),
           { body: commandsData }
         );
+      } catch {
+        throw new DeploymentError()
+      }
 
-        logger.debug(`Deployed ${commandsData.length} commands globally`);
+      logger.debug(`Deployed ${commandsData.length} commands globally`);
     }
 
     logger.debug("API Res:", JSON.stringify(responseData));

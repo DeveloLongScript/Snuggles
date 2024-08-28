@@ -5,6 +5,7 @@ import {
     SlashCommandBuilder,
     SlashCommandOptionsOnlyBuilder
 } from "discord.js";
+import { NotImplementedError } from "../errors/notImplementedError";
 
 /**
  * Represents a command that can be executed by the bot
@@ -43,11 +44,11 @@ export default class Command {
     }
 
     getCommand(): SlashCommandOptionsOnlyBuilder  {
-        throw new Error(this.name + " Command getCommand method not implemented");
+        throw new NotImplementedError("getCommand", this.name);
     }
 
     async execute(interaction: ChatInputCommandInteraction) {
-        throw new Error(this.name + " Command execute method not implemented");
+        throw new NotImplementedError("execute", this.name);
     }
 
     getSilent(interaction: ChatInputCommandInteraction): boolean {

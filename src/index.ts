@@ -10,6 +10,7 @@ export const userMessageService = new UserMessageService();
 
 (async () => {
     const now = new Date();
+    if (config().database.mongo_uri == "") logger.warn("MongoDB isn't configured in the config. Configure it in the config.toml file.")
     await databaseConnect(config().database.mongo_uri);
     logger.info(`Connected to database in ${new Date().getTime() - now.getTime()}ms`);
 
@@ -22,5 +23,6 @@ export const userMessageService = new UserMessageService();
         ]
     });
 
+    if (config().authorization.discord_token == "") logger.fatal("Cannot continue without the Discord token configured. Don't expect the bot to work.")
     await client.login(config().authorization.discord_token)
 })();
