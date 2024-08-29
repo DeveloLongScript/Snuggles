@@ -46,14 +46,21 @@ export default class PingCommand extends Command {
         description[2] = ` - **Response Latency** ${responseLatency}ms`
         embed.setDescription(description.join("\n"));
         await this.updateEmbed(interaction, embed, description);
+        try {
+            // Cannot have users in danger, dazzling at a loading screen
+            
+            const restPing = await getRestPing(interaction.client);
 
-        const restPing = await getRestPing(interaction.client);
-        description[3] = ` - **Misc Rest Latency** ${restPing}ms`
-        await this.updateEmbed(interaction, embed, description);
+            description[3] = ` - **Misc Rest Latency** ${restPing}ms`
+            await this.updateEmbed(interaction, embed, description);
 
-        const dbPing = await databaseLatency();
-        description[6] = ` - **Database Latency** ${dbPing}ms`
-        await this.updateEmbed(interaction, embed, description, "<:ping:1255273004292771931>  Pong!");
+            const dbPing = await databaseLatency();
+            description[6] = ` - **Database Latency** ${dbPing}ms`
+            await this.updateEmbed(interaction, embed, description, "<:ping:1255273004292771931>  Pong!");
+        } catch {
+            description[3] = "Woah! Something went wrong!"
+            await this.updateEmbed(interaction, embed, description, "<:ping:1255273004292771931>  Pong!")
+        }
     }
 
     private async updateEmbed(interaction: CommandInteraction, embed: FancyEmbed, description: string[], titleOverride: string | null = null) {
